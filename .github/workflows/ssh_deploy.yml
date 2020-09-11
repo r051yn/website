@@ -1,0 +1,22 @@
+# .github/workflows/ssh_deploy.yml
+
+name: Deploy HTML site via SSH
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Deploy to server
+      uses: easingthemes/ssh-deploy@v2.1.1
+      env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: "-rltgoDzvO --delete"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.REMOTE_TARGET }}
